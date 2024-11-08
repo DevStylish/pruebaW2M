@@ -1,0 +1,149 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card">
+        <div class="card-header">
+          <h2>{{ isEditMode() ? 'Editar Nave Espacial' : 'Nueva Nave Espacial' }}</h2>
+        </div>
+        <div class="card-body">
+          @if (starshipService.loading()) {
+          <div class="text-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+          }
+
+          @if (starshipService.error()) {
+          <div class="alert alert-danger">
+            {{ starshipService.error() }}
+          </div>
+          }
+
+          <form [formGroup]="starshipForm" (ngSubmit)="onSubmit()">
+
+            <!-- Campo Nombre -->
+            <div class="mb-3">
+              <label class="form-label">Nombre *</label>
+              <input type="text" class="form-control" formControlName="name"
+                [class.is-invalid]="isFieldInvalid('name')">
+              @if (isFieldInvalid('name')) {
+              <div class="invalid-feedback">
+                El nombre es requerido
+              </div>
+              }
+            </div>
+
+            <!-- Campo Modelo -->
+            <div class="mb-3">
+              <label class="form-label">Modelo *</label>
+              <input type="text" class="form-control" formControlName="model"
+                [class.is-invalid]="isFieldInvalid('model')">
+              @if (isFieldInvalid('model')) {
+              <div class="invalid-feedback">
+                El modelo es requerido
+              </div>
+              }
+            </div>
+
+            <!-- Campo Clase de Nave -->
+            <div class="mb-3">
+              <label class="form-label">Clase de Nave</label>
+              <input type="text" class="form-control" formControlName="starshipClass">
+            </div>
+
+            <!-- Campo Fabricante -->
+            <div class="mb-3">
+              <label class="form-label">Fabricante *</label>
+              <input type="text" class="form-control" formControlName="manufacturer"
+                [class.is-invalid]="isFieldInvalid('manufacturer')">
+              @if (isFieldInvalid('manufacturer')) {
+              <div class="invalid-feedback">
+                El fabricante es requerido
+              </div>
+              }
+            </div>
+
+            <!-- Campo Costo en Créditos -->
+            <div class="mb-3">
+              <label class="form-label">Costo en Créditos</label>
+              <input type="number" class="form-control" formControlName="costInCredits">
+            </div>
+
+            <!-- Campo Longitud -->
+            <div class="mb-3">
+              <label class="form-label">Longitud</label>
+              <input type="number" class="form-control" formControlName="length">
+            </div>
+
+            <!-- Campo Tripulación -->
+            <div class="mb-3">
+              <label class="form-label">Tripulación</label>
+              <input type="number" class="form-control" formControlName="crew">
+            </div>
+
+            <!-- Campo Pasajeros -->
+            <div class="mb-3">
+              <label class="form-label">Pasajeros</label>
+              <input type="number" class="form-control" formControlName="passengers">
+            </div>
+
+            <!-- Campo Velocidad Máxima Atmosférica -->
+            <div class="mb-3">
+              <label class="form-label">Velocidad Máxima Atmosférica</label>
+              <input type="text" class="form-control" formControlName="maxAtmospheringSpeed">
+            </div>
+
+            <!-- Campo MGLT -->
+            <div class="mb-3">
+              <label class="form-label">MGLT</label>
+              <input type="text" class="form-control" formControlName="MGLT">
+            </div>
+
+            <!-- Campo Capacidad de Carga -->
+            <div class="mb-3">
+              <label class="form-label">Capacidad de Carga</label>
+              <input type="number" class="form-control" formControlName="cargoCapacity">
+            </div>
+
+            <!-- Campo Consumibles -->
+            <div class="mb-3">
+              <label class="form-label">Consumibles</label>
+              <input type="text" class="form-control" formControlName="consumables">
+            </div>
+
+            <!-- Campo Películas -->
+            <div class="mb-3">
+              <label class="form-label">Películas</label>
+              <input type="text" class="form-control" formControlName="films">
+            </div>
+
+            <!-- Campo Pilotos -->
+            <div class="mb-3">
+              <label class="form-label">Pilotos</label>
+              <input type="text" class="form-control" formControlName="pilots">
+            </div>
+
+            <!-- Campo Imagen de la Nave -->
+            <div class="mb-3">
+              <label class="form-label">Imagen de la Nave</label>
+              <input type="text" class="form-control" formControlName="starshipImage">
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-between">
+              <button type="button" class="btn btn-secondary" (click)="goBack()">
+                <i class="bi bi-arrow-left"></i> Volver
+              </button>
+              <button type="submit" class="btn btn-primary"
+                [disabled]="starshipForm.invalid || starshipService.loading()">
+                <i class="bi bi-save"></i>
+                {{ isEditMode() ? 'Actualizar' : 'Crear' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

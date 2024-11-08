@@ -1,0 +1,104 @@
+<div class="container mt-4">
+  <!-- Barra de búsqueda -->
+  <div class="row">
+    <div class="col-md-6">
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Buscar por ID" [ngModel]="searchId()"
+          (ngModelChange)="searchId.set($event)" />
+        <button class="btn btn-primary" type="button" (click)="findById()">
+          <i class="bi bi-search"></i> Buscar por ID
+        </button>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Buscar por nombre" [ngModel]="searchName()"
+          (ngModelChange)="searchName.set($event)" />
+        <button class="btn btn-primary" type="button" (click)="findByName()">
+          <i class="bi bi-search"></i> Buscar por nombre
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón nueva nave -->
+  <div class="row mb-3">
+    <div class="col">
+      <button class="btn btn-success" (click)="goToCreateStarship()">
+        <i class="bi bi-plus-circle"></i> Nueva Nave
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading spinner -->
+  @if (starshipService.loading()) {
+  <div class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+  }
+
+  <!-- Error message -->
+  @if (starshipService.error()) {
+  <div class="alert alert-danger">
+    {{ starshipService.error() }}
+  </div>
+  }
+
+  <!-- Tabla de naves -->
+  @if (starshipService.starships().length > 0) {
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Nombre</th>
+          <th>Modelo</th>
+          <th>Fabricante</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (starship of paginatedStarships(); track starship.id) {
+        <tr>
+          <td>{{ starship.name }}</td>
+          <td>{{ starship.model }}</td>
+          <td>{{ starship.manufacturer }}</td>
+          <td>
+            <div class="btn-group" role="group">
+              <button class="btn btn-warning btn-sm" (click)="goToEditStarship(starship)">
+                <i class="bi bi-pencil"></i> Editar
+              </button>
+              <button class="btn btn-danger btn-sm ms-1" (click)="deleteStarship(starship.id)">
+                <i class="bi bi-trash"></i> Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Paginación -->
+  <nav>
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="page() === 1">
+        <a class="page-link" (click)="changePage(page() - 1)" href="javascript:void(0)">Anterior</a>
+      </li>
+      @for (pageNum of totalPagesArray(); track pageNum) {
+      <li class="page-item" [class.active]="pageNum === page()">
+        <a class="page-link" (click)="changePage(pageNum)" href="javascript:void(0)">{{ pageNum }}</a>
+      </li>
+      }
+      <li class="page-item" [class.disabled]="page() === totalPages()">
+        <a class="page-link" (click)="changePage(page() + 1)" href="javascript:void(0)">Siguiente</a>
+      </li>
+    </ul>
+  </nav>
+  } @else {
+  <div class="alert alert-info text-center">
+    No se encontraron naves espaciales
+  </div>
+  }
+</div>
